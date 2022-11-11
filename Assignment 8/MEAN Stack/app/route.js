@@ -1,5 +1,4 @@
 // app/routes.js
-// grab the nerd model we just created
 const express = require("express");
 const { check, validationResult} = require("express-validator");
 const bcrypt = require("bcryptjs");
