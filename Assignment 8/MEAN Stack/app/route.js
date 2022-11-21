@@ -18,37 +18,35 @@ let users = [];
 
  // Insertion
        app.post('/user/create',[
-        check("username", "Please Enter a Valid Username")
-          .not()
-          .isEmpty(),
-        check("email", "Please enter a valid email").isEmail(),
-        check("password", "Please enter a valid password").isLength({
-          min: 6
-        })
+        check('username', 'Please Enter a Valid Username').not().isEmpty(),
+        check('email', 'Please enter a valid email').isEmail(),
+        check('password', 'Please enter a valid password').isLength({
+          min: 6,
+        }),
       ],
       async (req, res) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
           return res.status(400).json({
-            errors: errors.array()
+            errors: errors.array(),
           });
         }
     
         const { username, email, password } = req.body;
         try {
-          let user = await User.findOne({
-            email
+          let user = await Sample.findOne({
+            email,
           });
           if (user) {
             return res.status(400).json({
-              msg: "User Already Exists"
+              msg: 'User Already Exists',
             });
           }
     
-          user = new User({
+          user = new Sample({
             username,
             email,
-            password
+            password,
           });
     
           const salt = await bcrypt.genSalt(10);
@@ -58,28 +56,28 @@ let users = [];
     
           const payload = {
             user: {
-              id: user.id
-            }
+              id: user.id,
+            },
           };
     
           jwt.sign(
             payload,
-            "randomString",
+            'randomString',
             {
-              expiresIn: 10000
+              expiresIn: 10000,
             },
             (err, token) => {
               if (err) throw err;
               res.status(200).json({
-                token
+                token,
               });
             }
           );
         } catch (err) {
           console.log(err.message);
-          res.status(500).send("Error in Saving");
+          res.status(500).send('Error in Saving');
         }
-       });
+      });
 
 
 
@@ -112,7 +110,7 @@ let users = [];
         }
     
         const fullname = req.params.username;
-        var newvalues = { $set: { username: "Michael", password: "Canyon123" } };
+        var newvalues = { $set: { username: "Sheldon", password: "Cooper123" } };
         Sample.findOneAndUpdate(fullname, newvalues)
             .then(data => {
                 if(!data){
@@ -137,8 +135,8 @@ let users = [];
     
         const fullname = req.params.username;
         const pwd = req.params.password;
-        var newvalues = { $set: { username: "Michael", password: "Canyon123" } };
-            Sample.findOneAndUpdate(fullname, newvalues)
+        var newvalues1 = { $set: { username: "Sheldon", password: "Cooper123" } };
+            Sample.findOneAndUpdate(pwd, newvalues1)
             .then(data => {
                 if(!data){
                     res.status(404).send({ message : `Cannot Update user.. Maybe user not found!`})
