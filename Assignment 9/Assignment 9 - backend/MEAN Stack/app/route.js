@@ -1,11 +1,15 @@
 // app/routes.js
-// grab the nerd model we just created
 const express = require("express");
 const { check, validationResult} = require("express-validator");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 var Sample = require('./models/sample');
 const JWT_SECRET = "hdufhjnscniooure7788920390940950]{}|{089**(";
+const cors = require("cors");
+const app = express();
+//const app = require("../server");
+//app.use(express.json);
+//app.use(cors());
 let users = [];
    module.exports = function(app) {
     // api to show all data
@@ -17,7 +21,7 @@ let users = [];
                res.json(samples);
            });
        });
-
+       app.use(cors());
  // Insertion
        app.post('/user/create',[
         check("username", "Please Enter a Valid Username")
@@ -157,14 +161,17 @@ let users = [];
 
       app.post('/user/login' , async(req,res) => {
         const {email, password} = req.body;
-        const user = await Users.findOne({email});
+        const user = await Sample.findOne({email});
+        console.log(user);
+        console.log("PWD",user.password);
+
         if(!user){
             return res.json({error:"User not found"});
         }
-        if(await bcrypt.compare(password,user.password)){
-            const token = jwt.sign({},JWT_SECRET);
-            if(res.status(201)){
-                return res.json({status:"OKAY",data:token});
+        if(password === user.password){
+          const token = jwt.sign({},JWT_SECRET);
+            if(res.status(200)){
+                return res.json({status:"OKAY"});
             }
             else{
                 return res.json({error:"error"});

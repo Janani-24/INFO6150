@@ -1,6 +1,5 @@
-import logo from './logo.svg';
 import './App.css';
-import {BrowserRouter as Router, Routes, Route, Navigate} from 'react-router-dom';
+import {BrowserRouter as Router, Routes, Route, Navigate,Link} from 'react-router-dom';
 import Home from "./Home";
 import About from "./About";
 import Jobs from "./Jobs";
@@ -11,6 +10,7 @@ import Login from "./Login"
    
     <Router>
       <Routes>
+
       <Route exact path="/" element={ <Navigate to="/login" /> } />
           <Route path='/home' element={<Home />}></Route>
           <Route path='/login' element={<Login />}></Route>
@@ -18,6 +18,8 @@ import Login from "./Login"
           <Route path='/jobs' element={<Jobs />}></Route>
           <Route path='/contact' element={<Contact />}></Route>
       </Routes>
+
+     
     </Router>
   );
 }
